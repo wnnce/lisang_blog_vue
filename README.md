@@ -1,9 +1,9 @@
 # blog-Vue
 博客系统的前端，使用`ant-design-vue`和`element-plus`ui框架搭建而成。包管理器采用`pnpm`，前台页面有完整的移动端适配。
 
-完整介绍请看 [lisang_blog]()
+完整介绍请看 [lisang_blog](https://github.com/wnnce/lisang_blog)
 
-演示[Demo]()
+演示[Demo](https://blog.zeroxn.com)
 ## 如何使用
 1. 克隆本仓库
 2. 安装`pnpm`包管理器
