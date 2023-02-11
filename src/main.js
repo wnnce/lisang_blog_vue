@@ -21,7 +21,6 @@ import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
 //markdown样式和高亮代码块
 import Prism from 'prismjs';
 import {elMessageErr} from "@/assets/js/util";
-import {ElMessage} from "element-plus";
 
 //axios全局配置和拦截器
 axios.defaults.baseURL = 'https://blog.zeroxn.com/api/';
@@ -36,7 +35,7 @@ axios.interceptors.response.use(res => {
             }, 300)
         //只有在后端返回code为1的情况下才表示操作成功 若不是1则打印错误消息
         }else if(res.data.code !== 1){
-            ElMessage.error(res.data.message)
+            elMessageErr(res.data.message)
         }else{
             return res.data;
         }
