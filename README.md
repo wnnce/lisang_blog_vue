@@ -12,7 +12,7 @@
     brew install pnpm
     # ArchLinux
     sudo pacman -S pnpm
-    # 也可以使用pnpm安装
+    # 也可以使用npm安装
     npm install pnpm
    ```
 3. 替换`main.js`和`Artalk.vue`中的后台地址为你自己的地址
