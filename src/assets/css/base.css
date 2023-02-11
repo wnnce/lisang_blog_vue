@@ -1,0 +1,41 @@
+.list-icon{
+    font-size: 12px;
+    margin-right: 8px;
+}
+.card-base{
+    border-radius: 12px;
+    cursor: auto;
+}
+.article-icon{
+    color: white;
+    font-size: 12px;
+    margin-right: 4px;
+}
+.text-hover:hover{
+    cursor: pointer;
+    animation-name: text-color-switch;
+    animation-duration: 300ms;
+    animation-fill-mode: forwards;
+}
+.list-tool{
+    text-align: end;
+}
+.box-button{
+    height: 36px;
+    width: 70px;
+    margin: 8px;
+}
+.vuepress-markdown-body{
+    padding: 12px !important;
+}
+.page-switch{
+    padding: 24px 0;
+}
+@media (max-width: 760px) {
+    .vuepress-markdown-body{
+        padding: 0 !important;
+    }
+}
+@keyframes text-color-switch {
+    to {color: #55bae7}
+}
