@@ -10,7 +10,7 @@ import {onActivated, onMounted, ref} from "vue";
 import {
   _getCategoryListByNormal, _getUserLinkListByNormal, _getTagListByNormal,
   _searchArticleTitle, _getArticleTop} from "@/assets/js/api";
-import {goTag, goAbout, goArticle, goHome, goLinks} from "@/assets/js/router";
+import { goArticle, goHome } from "@/assets/js/router";
 import {useDataStore} from "@/stores/dataStore";
 const store = useDataStore()
 const searchValue = ref('')
@@ -91,9 +91,9 @@ onActivated(() => {
               <a-card hoverable class="card-base" title="标签" :loading="isArrayNull(tagList)">
                 <template #extra><tags-outlined style="color: #9dd3a8; font-size: 24px"/></template>
                 <div class="tags">
-                  <a-typography-link @click="goTag(tag.id)" v-for="tag in tagList" :key="tag.id">
+                  <router-link :to="'/tag/' + tag.id" v-for="tag in tagList" :key="tag.id">
                     <a-tag :color="randomColor()" style="font-size: 12px; margin-bottom: 6px">{{tag.name}}</a-tag>
-                  </a-typography-link>
+                  </router-link>
                 </div>
               </a-card>
             </a-col>
@@ -101,17 +101,21 @@ onActivated(() => {
               <a-card hoverable style="border-radius: 12px; cursor: auto" title="站点链接">
                 <template #extra><paper-clip-outlined style="color: #5bd1d7; font-size: 24px"/></template>
                 <a-menu mode="horizontal" :selectable="false" style="justify-content: space-around">
-                  <a-menu-item key="mail" @click="goAbout">
+                  <a-menu-item key="mail">
                     <template #icon>
                       <mail-outlined />
                     </template>
-                    关于
+                    <router-link to="/about">
+                      关于
+                    </router-link>
                   </a-menu-item>
-                  <a-menu-item key="app" @click="goLinks()">
+                  <a-menu-item key="app">
                     <template #icon>
                       <appstore-outlined />
                     </template>
-                    友情链接
+                    <router-link to="/links">
+                      友情链接
+                    </router-link>
                   </a-menu-item>
                 </a-menu>
               </a-card>

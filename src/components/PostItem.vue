@@ -6,7 +6,6 @@ import {DashboardFilled, FolderFilled, TagFilled} from "@ant-design/icons-vue";
 import TextSM from "@/components/TextSM.vue";
 import {computed, ref} from "vue";
 import {useRouter} from "vue-router";
-import {goCategory} from "@/assets/js/router";
 
 const value = defineProps(['index', 'article'])
 const router = useRouter()
@@ -27,19 +26,24 @@ function goArticle(id){
       <a-col :span="14" :push="isIndex ? 10 : 0">
         <div class="post" >
           <a-space align="start" direction="vertical" :size="2">
-            <h2 class="text-hover" @click="goArticle(article.id)">{{article.title}}</h2>
+            <router-link :to="'/article/' + article.id">
+              <h2 class="text-hover">{{article.title}}</h2>
+            </router-link>
             <TextSM>
               <dashboard-filled style="color: #204969" class="list-icon" />
               {{article.createTime}}
             </TextSM>
             <TextSM v-if="article.categoryList">
               <folder-filled class="list-icon" style="color: #ea7070" />
-              <span class="a-text text-hover" v-for="category in article.categoryList"
-                    @click="goCategory(category.id)">{{category.name}}</span>
+              <router-link :to="'/category/' + category.id" v-for="category in article.categoryList" :key="category.id">
+                <span class="a-text text-hover">{{category.name}}</span>
+              </router-link>
             </TextSM>
             <TextSM v-if="article.tagList">
               <tag-filled class="list-icon" style="color: #9dd3a8" />
-              <span class="a-text text-hover" v-for="tag in article.tagList">{{tag.name}}</span>
+              <router-link :to="'/tag/' + tag.id" v-for="tag in article.tagList" :key="tag.id">
+                <span class="a-text text-hover">{{tag.name}}</span>
+              </router-link>
             </TextSM>
             <div class="post-summary">
               <a-typography-text type="secondary">{{article.summary}}</a-typography-text>
@@ -66,6 +70,7 @@ function goArticle(id){
   }
   .a-text{
     padding: 2px;
+    color: #999;
   }
   .post-summary{
     overflow:hidden;

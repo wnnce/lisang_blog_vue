@@ -1,6 +1,5 @@
 <!--分类列表中的每一项分类-->
 <script setup>
-import {goCategory} from "@/assets/js/router";
 import {ref} from "vue";
 
 defineProps(['category'])
@@ -8,11 +7,13 @@ const isDivActive = ref(false)
 </script>
 
 <template>
-<div class="category-item" @click="goCategory(category.id)" @mouseover="isDivActive = true"
-     @mouseleave="isDivActive = false" :class="isDivActive ? 'active' : 'not-active'">
-  <span>{{category.name}}</span>
-  <span>{{category.articleNum}}</span>
-</div>
+  <router-link :to="'/category/' + category.id">
+    <div class="category-item"  @mouseover="isDivActive = true"
+         @mouseleave="isDivActive = false" :class="isDivActive ? 'active' : 'not-active'">
+      <span>{{category.name}}</span>
+      <span>{{category.articleNum}}</span>
+    </div>
+  </router-link>
 </template>
 
 <style scoped lang="scss">
@@ -22,6 +23,7 @@ const isDivActive = ref(false)
   padding: 8px 8px;
   animation-duration: 400ms;
   animation-fill-mode: forwards;
+  color: #333;
 }
 .category-item:hover{
   background-color: #41b6e6;

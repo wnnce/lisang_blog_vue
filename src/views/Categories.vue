@@ -1,7 +1,7 @@
 <script setup>
 import "@/assets/css/base.css"
 import TextSM from "@/components/TextSM.vue"
-import {goArticle, go404} from "@/assets/js/router";
+import {go404} from "@/assets/js/router";
 import {onBeforeRouteUpdate, useRoute} from "vue-router";
 import {onMounted, ref} from "vue";
 import {_getCategoryInfo, _getArticleListByCategoryId} from "@/assets/js/api";
@@ -68,7 +68,9 @@ onBeforeRouteUpdate((value) => {
                 <a-list-item-meta
                     :description="item.summary">
                   <template #title>
-                    <span class="text-hover" @click="goArticle(item.id)" >{{ item.title }}</span>
+                    <router-link :to="'/article/' + item.id">
+                      <span class="text-hover">{{ item.title }}</span>
+                    </router-link>
                   </template>
                   <template #avatar>
                     <a-avatar :src="item.cover" :size="48" shape="square"/>
