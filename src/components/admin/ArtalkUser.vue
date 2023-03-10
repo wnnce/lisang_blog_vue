@@ -2,13 +2,14 @@
 
 import {onMounted, ref} from "vue";
 import {_deleteArtalkUser, _getArtalkUserList} from "@/assets/js/api";
-import {elMessageBox, elSuccessNot, isObjectNull, uaHandler} from "@/assets/js/util";
+import {elMessageBox, elSuccessNot, isArrayNull, isObjectNull, uaHandler} from "@/assets/js/util";
 
 const pageNum = ref(1);
 const pageSize = ref(10)
 const userPageInfo = ref([])
 
 async function getArtalkUserList(){
+  userPageInfo.value.list = [];
   userPageInfo.value = await _getArtalkUserList(pageNum.value, pageSize.value);
 }
 function deleteArtalkUser(id){
@@ -34,7 +35,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-table :data="userPageInfo.list" stripe style="width: 100%" size="default" v-loading="isObjectNull(userPageInfo)">
+  <el-table :data="userPageInfo.list" stripe style="width: 100%" size="default" v-loading="isArrayNull(userPageInfo.list)">
     <el-table-column prop="name" label="用户名"/>
     <el-table-column prop="email" label="邮箱" align="center"/>
     <el-table-column prop="link" label="网址" align="center"/>

@@ -8,7 +8,7 @@ onMounted(() => {
   const artalk = new Artalk({
     el: '#artalk',
     pageTitle: props.title,
-    server: 'https://blog.zeroxn.com/comments/',
+    server: '',
     site: '离桑的博客',
     placeholder: props.placeholder,
     // 图片上传 关闭图片评论

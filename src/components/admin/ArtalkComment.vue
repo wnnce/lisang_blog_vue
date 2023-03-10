@@ -4,7 +4,7 @@
 import {onMounted, ref} from "vue";
 import {
   _deleteArtalkComment, _getArtalkCommentList, _updateArtalkCommentType} from "@/assets/js/api";
-import {elMessageBox, elSuccessNot, isObjectNull} from "@/assets/js/util";
+import {elMessageBox, elSuccessNot, isArrayNull, isObjectNull} from "@/assets/js/util";
 
 const pageNum = ref(1)
 const pageSize = ref(10)
@@ -12,6 +12,7 @@ const commentPageInfo = ref([])
 
 
 async function getArtalkCommentList(){
+  commentPageInfo.value.list = [];
   commentPageInfo.value = await _getArtalkCommentList(pageNum.value, pageSize.value);
 }
 async function updateArtalkCommentType(id, isCollapsed, isPending, isPinned){
@@ -42,7 +43,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-table :data="commentPageInfo.list" stripe style="width: 100%" size="large" v-loading="isObjectNull(commentPageInfo)">
+  <el-table :data="commentPageInfo.list" stripe style="width: 100%" size="large" v-loading="isArrayNull(commentPageInfo.list)">
     <el-table-column type="expand" label="详情" width="60">
       <template #default="props">
         <div style="padding: 20px">

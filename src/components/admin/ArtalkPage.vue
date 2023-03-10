@@ -2,13 +2,14 @@
 
 import {onMounted, ref} from "vue";
 import {_deleteArtalkPage, _getArtalkPageList, _updateArtalkPageType} from "@/assets/js/api";
-import {elMessageBox, elSuccessNot, isObjectNull} from "@/assets/js/util";
+import {elMessageBox, elSuccessNot, isArrayNull, isObjectNull} from "@/assets/js/util";
 
 const artalkPageInfo = ref({})
 const pageNum = ref(1)
 const pageSize = ref(10)
 
 async function getArtalkPageList(){
+  artalkPageInfo.value.list = []
   artalkPageInfo.value = await _getArtalkPageList(pageNum.value, pageSize.value);
 }
 async function handlerSwitchChange(id, adminOnly){
@@ -39,7 +40,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-table :data="artalkPageInfo.list" stripe style="width: 100%" size="large" v-loading="isObjectNull(artalkPageInfo)">
+  <el-table :data="artalkPageInfo.list" stripe style="width: 100%" size="large" v-loading="isArrayNull(artalkPageInfo.list)">
     <el-table-column prop="title" label="页面标题"/>
     <el-table-column prop="createdAt" label="建立评论区时间" align="center" width="200"/>
     <el-table-column prop="updatedAt" label="最后评论时间" align="center" width="200"/>

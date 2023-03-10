@@ -6,7 +6,7 @@ import {
   elMessageNot,
   elSuccessNot,
   handlerCopySuccess,
-  idArrayForMatObject,
+  idArrayForMatObject, isArrayNull,
   isObjectNull,
   listForMatOptions,
   listForMatOptionsItem
@@ -23,7 +23,7 @@ const title = ref('');
 const articleInfo = ref({});
 const categoryOptions = ref([])
 const tagOptions = ref([])
-const articlePageInfo = ref({})
+let articlePageInfo = ref({})
 function addArticle(){
   if (articleInfo.value.id){
     articleInfo.value = {};
@@ -33,14 +33,16 @@ function addArticle(){
   isAddAndEdit.value = true;
 }
 async function editArticle(id){
+  articleInfo.value = {};
+  title.value = '修改文章';
+  isAddAndEdit.value = true;
   articleInfo.value = await _getArticleInfo(id);
   articleInfo.value.tagList = listForMatOptionsItem(articleInfo.value.tagList);
   articleInfo.value.categoryList = listForMatOptionsItem(articleInfo.value.categoryList);
-  title.value = '修改文章';
   await initOptions();
-  isAddAndEdit.value = true;
 }
 async function getArticleList(){
+  articlePageInfo.value.list = [];
   articlePageInfo.value = await _getArticleList(pageNum.value, pageSize.value, keyWord.value);
 }
 function updateArticleStatus(id, bl, status){
@@ -137,7 +139,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="isAddAndEdit">
+  <div v-if="isAddAndEdit" v-loading="title === '修改文章' && isObjectNull(articleInfo)">
     <el-row justify="center">
       <el-col :span="24">
         <div style="text-align: center; margin-bottom: 12px">
@@ -200,7 +202,7 @@ onMounted(() => {
         新增文章
       </el-button>
     </div>
-    <el-table :data="articlePageInfo.list" stripe style="width: 100%" v-loading="isObjectNull(articlePageInfo)">
+    <el-table :data="articlePageInfo.list" stripe style="width: 100%" v-loading="isArrayNull(articlePageInfo.list)">
       <el-table-column type="expand" label="详情" width="60">
         <template #default="props">
           <div style="width: 800px; padding: 20px">

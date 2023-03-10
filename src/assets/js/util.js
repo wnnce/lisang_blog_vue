@@ -88,7 +88,7 @@ export function isObjectNull(obj){
 }
 //判断数组或集合是否为空
 export function isArrayNull(array){
-    return array === null || JSON.stringify(array) === '[]';
+    return array === null || array === undefined || array.length === 0;
 }
 //格式化UA 只提取需要的值
 export function uaHandler(ua){
