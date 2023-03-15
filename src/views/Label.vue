@@ -1,62 +1,59 @@
 <script setup>
-import "@/assets/css/base.css"
 import TextSM from "@/components/TextSM.vue"
 import {go404} from "@/assets/js/router";
 import {onBeforeRouteUpdate, useRoute} from "vue-router";
 import {onMounted, ref} from "vue";
-import {_getCategoryInfo, _getArticleListByCategoryId} from "@/assets/js/api";
+import {_getLabelInfo, _getArticleListByLabelId} from "@/assets/js/api";
 import {isObjectNull} from "@/assets/js/util";
 const route = useRoute();
 const id = ref('');
-const categoryInfo = ref({});
+const labelInfo = ref({});
 const articlePageInfo = ref({});
+
 async function initCategoryInfo(){
-  categoryInfo.value = await _getCategoryInfo(id.value)
-  if (!categoryInfo.value){
+  labelInfo.value = await _getLabelInfo(id.value);
+  if (isObjectNull(labelInfo.value)){
     await go404();
   }
-  if (categoryInfo.value.articleNum > 0){
+  if (labelInfo.value.articleNum > 0){
     await getArticleList(1)
   }
 }
 async function getArticleList(pageNum){
-  articlePageInfo.value = await _getArticleListByCategoryId(id.value, pageNum)
+  articlePageInfo.value = await _getArticleListByLabelId(id.value, pageNum)
 }
 onMounted(() => {
   let tempId = Number(route.params.id);
   if (isNaN(tempId)){
-    go404();
-  }else{
+    go404()
+  }else {
     id.value = tempId;
-    initCategoryInfo();
+    initCategoryInfo()
   }
-
 })
 onBeforeRouteUpdate((value) => {
-  let tempId = Number(value.params.id)
+  let tempId = Number(value.params.id);
   if (isNaN(tempId)){
-    go404();
+    go404()
   }else{
     id.value = tempId;
-    categoryInfo.value = {};
-    articlePageInfo.value = {};
-    initCategoryInfo();
+    labelInfo.value = {}
+    articlePageInfo.value = {}
+    initCategoryInfo()
   }
-
-
 })
 </script>
 
 <template>
-  <a-card :title="'分类详情：' + categoryInfo.name" hoverable class="card-base" :loading="isObjectNull(categoryInfo)">
+  <a-card :title="'分类/标签详情：' + labelInfo.name" hoverable class="card-base" :loading="isObjectNull(labelInfo)">
     <a-row :gutter="[0,16]" justify="center">
       <a-col :span="24">
         <div class="top">
           <TextSM>
-            创建于：{{categoryInfo.createTime}}
+            创建于：{{ labelInfo.createTime }}
           </TextSM>
           <TextSM>
-            关联文章数量：{{articlePageInfo.total ? articlePageInfo.total : 0}}
+            关联文章数量：{{ articlePageInfo.total }}
           </TextSM>
         </div>
       </a-col>

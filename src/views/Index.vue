@@ -6,19 +6,28 @@ import CategoryItem from "@/components/CategoryItem.vue";
 import Footer from "@/components/Footer.vue";
 import LinkImg from "@/components/LinkLogo.vue";
 import {isArrayNull, randomColor} from "@/assets/js/util";
-import {onActivated, onMounted, ref} from "vue";
-import {
-  _getCategoryListByNormal, _getUserLinkListByNormal, _getTagListByNormal,
-  _searchArticleTitle, _getArticleTop} from "@/assets/js/api";
+import {computed, onActivated, onMounted, ref} from "vue";
+import {_getUserLinkListByNormal, _searchArticleTitle, _getArticleTop, _getLabelListByNormal} from "@/assets/js/api";
 import { goArticle, goHome } from "@/assets/js/router";
 import {useDataStore} from "@/stores/dataStore";
-const store = useDataStore()
-const searchValue = ref('')
-const options = ref([])
-const links = ref([])
-const tagList = ref([])
-const categoryList = ref([])
-const articleTop = ref([])
+const store = useDataStore();
+const searchValue = ref('');
+const options = ref([]);
+const links = ref([]);
+const labelList = ref([]);
+const articleTop = ref([]);
+
+const tagList = computed(() => {
+  return labelList.value.filter(item => {
+    return item.flag === 1;
+  })
+});
+const categoryList = computed(() => {
+  return labelList.value.filter(item => {
+    return item.flag === 2;
+  })
+});
+
 async function onSearch(e){
   if (e){
     options.value = []
@@ -39,8 +48,7 @@ async function getArticleTop(){
 }
 async function initIndex(){
   links.value = await _getUserLinkListByNormal();
-  tagList.value = await _getTagListByNormal();
-  categoryList.value = await _getCategoryListByNormal();
+  labelList.value = await _getLabelListByNormal();
 }
 
 onMounted(() => {
@@ -91,7 +99,7 @@ onActivated(() => {
               <a-card hoverable class="card-base" title="标签" :loading="isArrayNull(tagList)">
                 <template #extra><tags-outlined style="color: #9dd3a8; font-size: 24px"/></template>
                 <div class="tags">
-                  <router-link :to="'/tag/' + tag.id" v-for="tag in tagList" :key="tag.id">
+                  <router-link :to="'/label/' + tag.id" v-for="tag in tagList" :key="tag.id">
                     <a-tag :color="randomColor()" style="font-size: 12px; margin-bottom: 6px">{{tag.name}}</a-tag>
                   </router-link>
                 </div>

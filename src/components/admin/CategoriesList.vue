@@ -3,12 +3,12 @@ import {onMounted, ref} from "vue";
 import {PlusOutlined} from "@ant-design/icons-vue";
 import {ElMessageBox} from "element-plus";
 import {elMessageBox, elMessageNot, elSuccessNot, isArrayNull} from "@/assets/js/util";
-import {_addCategory, _getCategoryList, _updateCategoryStatus, _deleteCategory} from "@/assets/js/api";
+import {_deleteLabel, _addLabel, _getLabelList, _updateLabelStatus} from "@/assets/js/api";
 
 const categoryList = ref([]);
 
 async function getCategoryList(){
-  categoryList.value = await _getCategoryList();
+  categoryList.value = await _getLabelList(2);
 }
 function addCategory(){
   ElMessageBox.prompt('请输入分类名称', '新增分类', {
@@ -21,7 +21,7 @@ function addCategory(){
       }
     }
   }).then(async ({value}) => {
-    if (await _addCategory({name: value})){
+    if (await _addLabel(value, 2)){
       elSuccessNot('', '添加成功' + value)
       await getCategoryList();
     }
@@ -34,7 +34,7 @@ function updateCategoryStatus(id, status){
   status === 1 ? newStatus = 0 : newStatus = 1;
   status === 1 ? message = '禁用分类后，关联的所有文章都不会再显示该分类！' : message = '启用分类后，在文章中会显示该分类！';
   elMessageBox('修改分类状态', message).then(async () => {
-    if (await _updateCategoryStatus(id, newStatus)){
+    if (await _updateLabelStatus(id, newStatus)){
       elSuccessNot('', status === 1 ? '禁用成功' : '启用成功')
       await getCategoryList();
     }
@@ -44,7 +44,7 @@ function updateCategoryStatus(id, status){
 }
 function deleteCategory(id){
   elMessageBox('删除分类', '确定删除该分类？').then(async () => {
-    if (await _deleteCategory(id)){
+    if (await _deleteLabel(id)){
       elSuccessNot('', '删除成功')
       await getCategoryList();
     }

@@ -7,7 +7,7 @@ const isDivActive = ref(false)
 </script>
 
 <template>
-  <router-link :to="'/category/' + category.id">
+  <router-link :to="'/label/' + category.id">
     <div class="category-item"  @mouseover="isDivActive = true"
          @mouseleave="isDivActive = false" :class="isDivActive ? 'active' : 'not-active'">
       <span>{{category.name}}</span>

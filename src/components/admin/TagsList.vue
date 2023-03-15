@@ -3,12 +3,12 @@ import {onMounted, ref} from "vue";
 import {PlusOutlined} from "@ant-design/icons-vue";
 import {ElMessageBox} from "element-plus";
 import {elMessageBox, elMessageNot, elSuccessNot, isArrayNull} from "@/assets/js/util";
-import {_addTag, _deleteTag, _getTagList, _updateTagStatus} from "@/assets/js/api";
+import {_addLabel, _deleteLabel, _getLabelList, _updateLabelStatus} from "@/assets/js/api";
 
 const tagList = ref([]);
 
 async function getTagList(){
-  tagList.value = await _getTagList();
+  tagList.value = await _getLabelList(1);
 }
 
 function addTag(){
@@ -22,7 +22,7 @@ function addTag(){
       }
     }
   }).then(async ({value}) => {
-    if (await _addTag({name: value})){
+    if (await _addLabel(value, 1)){
       elSuccessNot('', '添加成功' + value)
       await getTagList();
     }
@@ -35,7 +35,7 @@ function updateTagStatus(id, status){
   status === 1? newStatus = 0 : newStatus = 1;
   status === 1 ? message = '禁用标签后，关联的所有文章都不会再显示该标签！' : message = '启用标签后，在文章中会显示该标签！'
   elMessageBox('修改标签状态', message).then(async () => {
-    if (await _updateTagStatus(id, newStatus)){
+    if (await _updateLabelStatus(id, newStatus)){
       elSuccessNot('', status === 1 ? '禁用成功' : '启用成功')
       await getTagList();
     }
@@ -45,7 +45,7 @@ function updateTagStatus(id, status){
 }
 function deleteTag(id){
   elMessageBox('删除标签', '确定删除该标签？').then(async () => {
-    if (await _deleteTag(id)){
+    if (await _deleteLabel(id)){
       elSuccessNot('', '删除成功')
       await getTagList();
     }

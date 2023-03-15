@@ -4,7 +4,7 @@ import { onMounted, ref} from "vue";
 import {
   elMessageBox,
   elMessageNot,
-  elSuccessNot,
+  elSuccessNot, filterLabelList,
   handlerCopySuccess,
   idArrayForMatObject, isArrayNull,
   isObjectNull,
@@ -13,7 +13,7 @@ import {
 } from "@/assets/js/util";
 import LogoUpload from "@/components/LogoUpload.vue";
 import {_fileUpload, _getArticleInfo, _getArticleList, _deleteArticle, _saveArticle, _updateArticle,
-  _getCategoryListByNormal, _getTagListByNormal, _updateArticleType} from "@/assets/js/api";
+  _getLabelListByNormal, _updateArticleType} from "@/assets/js/api";
 
 const keyWord = ref(null);
 const pageNum = ref(1);
@@ -21,24 +21,26 @@ const pageSize = ref(10);
 const isAddAndEdit = ref(false);
 const title = ref('');
 const articleInfo = ref({});
-const categoryOptions = ref([])
-const tagOptions = ref([])
-let articlePageInfo = ref({})
+const categoryList = ref([]);
+const tagList = ref([]);
+const categoryOptions = ref([]);
+const tagOptions = ref([]);
+let articlePageInfo = ref({});
 function addArticle(){
   if (articleInfo.value.id){
-    articleInfo.value = {};
+    clearPageData();
   }
   initOptions();
   title.value = '新增文章';
   isAddAndEdit.value = true;
 }
 async function editArticle(id){
-  articleInfo.value = {};
+  clearPageData();
   title.value = '修改文章';
   isAddAndEdit.value = true;
   articleInfo.value = await _getArticleInfo(id);
-  articleInfo.value.tagList = listForMatOptionsItem(articleInfo.value.tagList);
-  articleInfo.value.categoryList = listForMatOptionsItem(articleInfo.value.categoryList);
+  tagList.value = listForMatOptionsItem(filterLabelList(articleInfo.value.labelList, 1));
+  categoryList.value = listForMatOptionsItem(filterLabelList(articleInfo.value.labelList, 2));
   await initOptions();
 }
 async function getArticleList(){
@@ -70,17 +72,16 @@ function deleteArticle(id){
 }
 
 async function submitForm(){
-  articleInfo.value.tagList = idArrayForMatObject(articleInfo.value.tagList);
-  articleInfo.value.categoryList = idArrayForMatObject(articleInfo.value.categoryList);
+  articleInfo.value.labelList = idArrayForMatObject(tagList.value).concat(idArrayForMatObject(categoryList.value));
   if (articleInfo.value.id){
     if (await _updateArticle(articleInfo.value)){
       successMessage('更新成功！')
-      articleInfo.value = {}
+      clearPageData();
     }
   } else {
     if(await _saveArticle(articleInfo.value)){
       successMessage('保存成功!')
-      articleInfo.value = {}
+      clearPageData();
     }
   }
 }
@@ -98,10 +99,9 @@ function exit(){
   })
 }
 async function initOptions(){
-  let categoryRes = await _getCategoryListByNormal();
-  categoryOptions.value = listForMatOptions(categoryRes)
-  let tagRes = await _getTagListByNormal();
-  tagOptions.value = listForMatOptions(tagRes)
+  let labelRes = await _getLabelListByNormal();
+  categoryOptions.value = listForMatOptions(filterLabelList(labelRes, 2));
+  tagOptions.value = listForMatOptions(filterLabelList(labelRes, 1));
 }
 function handlerSearch(){
   if (keyWord.value === ''){
@@ -132,6 +132,20 @@ function handlerPageNumChange(){
 function handlerPageSizeChange(){
   pageNum.value = 1;
   getArticleList()
+}
+
+function clearPageData(){
+  articleInfo.value = {};
+  tagList.value = [];
+  categoryList.value = [];
+}
+
+function formatLabelList(labelList, flag){
+  let tempArr = filterLabelList(labelList, flag);
+  let nameArr = tempArr.map(label => {
+    return label.name;
+  })
+  return nameArr.join(",");
 }
 onMounted(() => {
   getArticleList();
@@ -167,11 +181,11 @@ onMounted(() => {
             <LogoUpload v-model:image-url="articleInfo.cover" :size="['200px', '120px']"></LogoUpload>
           </el-form-item>
           <el-form-item label="文章分类">
-            <el-select-v2 v-model="articleInfo.categoryList" :options="categoryOptions" placeholder="选择文章分类，可多选"
+            <el-select-v2 v-model="categoryList" :options="categoryOptions" placeholder="选择文章分类，可多选"
                           style="width: 100%" multiple clearable/>
           </el-form-item>
           <el-form-item label="文章标签">
-            <el-select-v2 v-model="articleInfo.tagList" :options="tagOptions" placeholder="选择文章标签，可多选"
+            <el-select-v2 v-model="tagList" :options="tagOptions" placeholder="选择文章标签，可多选"
                           style="width: 100%" multiple clearable/>
           </el-form-item>
           <div class="form-button">
@@ -211,10 +225,10 @@ onMounted(() => {
                 {{props.row.summary}}
               </el-descriptions-item>
               <el-descriptions-item label="文章分类：">
-                {{props.row.categoryList?.map(category => {return category.name})}}
+                {{formatLabelList(props.row.labelList, 2)}}
               </el-descriptions-item>
               <el-descriptions-item label="文章标签：">
-                {{props.row.tagList?.map(tag => {return tag.name})}}
+                {{formatLabelList(props.row.labelList, 1)}}
               </el-descriptions-item>
               <el-descriptions-item label="文章封面：" />
               <el-descriptions-item>
@@ -231,12 +245,12 @@ onMounted(() => {
       </el-table-column>
       <el-table-column label="分类" align="center" width="100">
         <template #default="scope">
-          {{scope.row.categoryList ? scope.row.categoryList.length : 0}}个
+          {{filterLabelList(scope.row.labelList, 2).length}}个
         </template>
       </el-table-column>
       <el-table-column label="标签" align="center" width="100">
         <template #default="scope">
-          {{scope.row.tagList ? scope.row.tagList.length : 0}}个
+          {{filterLabelList(scope.row.labelList, 1).length}}个
         </template>
       </el-table-column>
       <el-table-column label="点击数" align="center" width="120">

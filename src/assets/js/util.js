@@ -79,6 +79,19 @@ export function idArrayForMatObject(ids){
         return idList;
     }
 }
+
+/**
+ * 通过flag参数将 分类/标签列表拆分为单独的分类或者标签
+ * @param labelList 分类/标签列表
+ * @param flag 标志 1：标签 2：分类
+ * @returns {*} 返回拆分后的列表
+ */
+export function filterLabelList(labelList, flag){
+    return labelList.filter(item => {
+        return item.flag === flag;
+    })
+}
+
 export function handlerCopySuccess(){
     elSuccessNot('', '复制成功');
 }

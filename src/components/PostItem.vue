@@ -13,9 +13,18 @@ const isImageActive = ref(false)
 const isIndex = computed(() => {
   return value.index % 2 === 0
 })
-function goArticle(id){
-  router.push("/article/" + id);
-}
+
+const tagList = computed(() => {
+  return value.article.labelList.filter(item => {
+    return item.flag === 1;
+  })
+})
+
+const categoryList = computed(() => {
+  return value.article.labelList.filter(item => {
+    return item.flag === 2;
+  })
+})
 
 </script>
 
@@ -33,15 +42,15 @@ function goArticle(id){
               <dashboard-filled style="color: #204969" class="list-icon" />
               {{article.createTime}}
             </TextSM>
-            <TextSM v-if="article.categoryList">
+            <TextSM v-if="categoryList">
               <folder-filled class="list-icon" style="color: #ea7070" />
-              <router-link :to="'/category/' + category.id" v-for="category in article.categoryList" :key="category.id">
+              <router-link :to="'/category/' + category.id" v-for="category in categoryList" :key="category.id">
                 <span class="a-text text-hover">{{category.name}}</span>
               </router-link>
             </TextSM>
-            <TextSM v-if="article.tagList">
+            <TextSM v-if="tagList">
               <tag-filled class="list-icon" style="color: #9dd3a8" />
-              <router-link :to="'/tag/' + tag.id" v-for="tag in article.tagList" :key="tag.id">
+              <router-link :to="'/tag/' + tag.id" v-for="tag in tagList" :key="tag.id">
                 <span class="a-text text-hover">{{tag.name}}</span>
               </router-link>
             </TextSM>

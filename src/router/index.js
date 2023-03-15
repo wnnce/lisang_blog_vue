@@ -14,14 +14,9 @@ const router = createRouter({
           component: () => import("@/views/Home.vue"),
         },
         {
-          path: "category/:id",
-          name: "category",
-          component: () => import("@/views/Categories.vue")
-        },
-        {
-          path: "tag/:id",
-          name: "tag",
-          component: () => import("@/views/Tags.vue")
+          path: "label/:id",
+          name: "label",
+          component: () => import("@/views/Label.vue")
         },
         {
           path: "about",

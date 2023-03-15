@@ -1,6 +1,6 @@
 <script setup>
 import "@/assets/css/base.css"
-import {handlerCopySuccess, isObjectNull} from "@/assets/js/util";
+import {filterLabelList, handlerCopySuccess, isObjectNull} from "@/assets/js/util";
 import { DashboardFilled, ClockCircleFilled, FolderFilled, TagFilled, FileWordFilled, EyeFilled,
   ArrowLeftOutlined } from "@ant-design/icons-vue";
 import TextSM from "@/components/TextSM.vue"
@@ -14,7 +14,8 @@ import {goBack, go404} from "@/assets/js/router";
 import {useDataStore} from "@/stores/dataStore";
 const store = useDataStore();
 const route = useRoute();
-const commentList = ref([])
+const tagList = ref([]);
+const categoryList = ref([]);
 const articleInfo = reactive({
   article: {},
   up: {},
@@ -49,6 +50,8 @@ async function getArticleInfo(id){
   if (articleRes.article){
     articleInfo.article = articleRes.article;
     contentNum.value = articleInfo.article.content.length;
+    tagList.value = filterLabelList(articleRes.article.labelList, 1);
+    categoryList.value = filterLabelList(articleRes.article.labelList, 2);
   }
   if (articleRes.up){
     articleInfo.up = articleRes.up;
@@ -93,14 +96,14 @@ onMounted(() => {
           点击数：{{articleInfo.article.clickNum}}
         </TextSM>
         <br>
-        <TextSM style="color: white" v-if="articleInfo.article.categoryList">
+        <TextSM style="color: white" v-if="categoryList">
           <folder-filled class="article-icon" />
-          <span class="category-item" v-for="category in articleInfo.article.categoryList"
+          <span class="category-item" v-for="category in categoryList"
                 :key="category.id">{{category.name}}</span>
         </TextSM>
-        <TextSM style="color:white; margin-left: 12px" v-if="articleInfo.article.tagList">
+        <TextSM style="color:white; margin-left: 12px" v-if="tagList">
           <tag-filled class="article-icon" />
-          <span class="tag-item" v-for="tag in articleInfo.article.tagList" :key="tag.id">{{tag.name}}</span>
+          <span class="tag-item" v-for="tag in tagList" :key="tag.id">{{tag.name}}</span>
         </TextSM>
         <br>
         <TextSM style="color: white">

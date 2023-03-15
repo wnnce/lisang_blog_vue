@@ -46,31 +46,18 @@ export function _updateUserLinkStatus(id, status){
 export function _deleteUserLink(id){
     return _delete('/user/link/' + id)
 }
-//后台分类管理页面接口
-export function _getCategoryList(){
-    return _get('/category')
+//后台分类/标签管理页面接口
+export function _getLabelList(status){
+    return _get('/label', {status: status})
 }
-export function _addCategory(data){
-    return _post('/category', data)
+export function _addLabel(name, status){
+    return _post('/label', {name: name, flag: status})
 }
-export function _updateCategoryStatus(id, status){
-    return _put('/category', {id: id, status: status})
+export function _updateLabelStatus(id, status){
+    return _put('/label', {id: id, status: status})
 }
-export function _deleteCategory(id){
-    return _delete('/category/' + id)
-}
-//后台标签管理页面接口
-export function _getTagList(){
-    return _get('/tag')
-}
-export function _addTag(data){
-    return _post('/tag', data)
-}
-export function _updateTagStatus(id, status){
-    return _put('/tag', {id: id, status: status})
-}
-export function _deleteTag(id){
-    return _delete('/tag/' + id)
+export function _deleteLabel(id){
+    return _delete('/label/' + id)
 }
 //后台文章管理页面接口
 export function _getArticleList(pageNum, pageSize, keyWord){
@@ -158,11 +145,8 @@ export function _getUserInfo(){
 export function _getUserLinkListByNormal(){
     return _get('/user/link/list')
 }
-export function _getCategoryListByNormal(){
-    return _get('/category/list')
-}
-export function _getTagListByNormal(){
-    return _get('/tag/list')
+export function _getLabelListByNormal(){
+    return _get('/label/list')
 }
 export function _getArticleListByNormal(pageNum){
     return _get('/article/list', {page: pageNum})
@@ -176,17 +160,11 @@ export function _getArticleInfoByNormal(id){
 export function _searchArticleTitle(title){
     return _get('/article/search', {title: title})
 }
-export function _getArticleListByTagId(id, pageNum){
-    return _get('/article/list/tag', {id: id, page: pageNum})
+export function _getArticleListByLabelId(id, pageNum){
+    return _get('/article/list/label', {id: id, page: pageNum})
 }
-export function _getArticleListByCategoryId(id, pageNum){
-    return _get('/article/list/category', {id: id, page: pageNum})
-}
-export function _getCategoryInfo(id){
-    return _get('/category/info/' + id)
-}
-export function _getTagInfo(id){
-    return _get('/tag/info/' + id,)
+export function _getLabelInfo(id){
+    return _get('/label/info/' + id,)
 }
 export function _getLinkList(){
     return _get('/links/list')
