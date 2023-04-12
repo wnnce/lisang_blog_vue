@@ -2,7 +2,6 @@ import axios from "axios";
 import to from 'await-to-js';
 
 //封装axios的请求方式
-
 export async function _get(url, data){
     const params = {
         url: url,

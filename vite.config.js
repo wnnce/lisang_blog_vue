@@ -11,7 +11,7 @@ export default defineConfig({
   plugins: [
     vue(),
     prismjs({
-      languages: ['json', 'java', 'python', 'sql', 'yaml', 'bash', 'go', 'html', 'xml'],
+      languages: ['json', 'java', 'python', 'sql', 'yaml', 'bash', 'go', 'html', 'xml', 'javascript'],
     }),
       //配置 element-plus、Antd ui库的自动加载
     AutoImport({

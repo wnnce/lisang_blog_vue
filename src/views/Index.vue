@@ -169,6 +169,7 @@ onActivated(() => {
               <a-col :span="24">
                 <a-card hoverable class="card-base" title="分类" :loading="isArrayNull(categoryList)">
                   <template #extra><folder-open-outlined  style="color: #ea7070; font-size: 24px"/></template>
+                  <div></div>
                   <CategoryItem v-for="category in categoryList" :key="category.id" :category="category"></CategoryItem>
                 </a-card>
               </a-col>
