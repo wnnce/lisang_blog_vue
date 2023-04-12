@@ -50,14 +50,13 @@ async function updateLink(link){
   linkDialogTitle.value = '修改联系方式';
   isLinkDialog.value = true;
 }
-function updateLinkStatus(id, status){
-  let message, newStatus;
-  status === 1 ? newStatus = 0 : newStatus = 1;
-  status === 1 ? message = '确定禁用该联系方式？' : message = '确定启用该联系方式?';
+function updateLinkStatus(link){
+  const newStatus = link.status === 1 ?  0 : 1;
+  const message = link.status === 1 ? '确定禁用该联系方式？' : '确定启用该联系方式?';
   elMessageBox('提示', message).then(async () => {
-    await _updateUserLinkStatus(id, newStatus)
-    elSuccessNot('', status === 1 ? '禁用成功' : '启用成功')
-    await getUserLinks();
+    await _updateUserLinkStatus(link.id, newStatus)
+    elSuccessNot('', link.status === 1 ? '禁用成功' : '启用成功')
+    link.status = newStatus;
   }).catch(() => {
     elMessageNot('', '操作取消')
   })
@@ -167,7 +166,7 @@ onMounted(() => {
     <el-table-column label="操作" width="240" align="center">
       <template #default="scope">
         <el-button type="primary" text @click="updateLink(scope.row)">修改</el-button>
-        <el-button type="warning" text @click="updateLinkStatus(scope.row.id, scope.row.status)">{{scope.row.status === 1 ? '禁用' : '启用'}}</el-button>
+        <el-button type="warning" text @click="updateLinkStatus(scope.row)">{{scope.row.status === 1 ? '禁用' : '启用'}}</el-button>
         <el-button type="danger" text @click="deleteLink(scope.row.id)">删除</el-button>
       </template>
     </el-table-column>

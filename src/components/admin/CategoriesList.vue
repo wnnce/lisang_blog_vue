@@ -29,14 +29,13 @@ function addCategory(){
     elMessageNot('', '取消添加')
   })
 }
-function updateCategoryStatus(id, status){
-  let message, newStatus;
-  status === 1 ? newStatus = 0 : newStatus = 1;
-  status === 1 ? message = '禁用分类后，关联的所有文章都不会再显示该分类！' : message = '启用分类后，在文章中会显示该分类！';
+function updateCategoryStatus(category){
+  const newStatus = category.status === 1 ? 0 : 1;
+  const message = category.status === 1 ? '禁用分类后，关联的所有文章都不会再显示该分类！' : '启用分类后，在文章中会显示该分类！';
   elMessageBox('修改分类状态', message).then(async () => {
-    if (await _updateLabelStatus(id, newStatus)){
-      elSuccessNot('', status === 1 ? '禁用成功' : '启用成功')
-      await getCategoryList();
+    if (await _updateLabelStatus(category.id, newStatus)){
+      elSuccessNot('', category.status === 1 ? '禁用成功' : '启用成功')
+      category.status = newStatus;
     }
   }).catch(() => {
     elMessageNot('', '操作取消')
@@ -75,7 +74,7 @@ onMounted(() => {
     </el-table-column>
     <el-table-column label="操作" width="240" align="center">
       <template #default="scope">
-        <el-button type="warning" text @click="updateCategoryStatus(scope.row.id, scope.row.status)">{{scope.row.status === 1 ? '禁用' : '启用'}}</el-button>
+        <el-button type="warning" text @click="updateCategoryStatus(scope.row)">{{scope.row.status === 1 ? '禁用' : '启用'}}</el-button>
         <el-button type="danger" text @click="deleteCategory(scope.row.id)">删除</el-button>
       </template>
     </el-table-column>

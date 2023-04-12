@@ -47,14 +47,13 @@ async function getArticleList(){
   articlePageInfo.value.list = [];
   articlePageInfo.value = await _getArticleList(pageNum.value, pageSize.value, keyWord.value);
 }
-function updateArticleStatus(id, bl, status){
-  let message, newStatus;
-  status === 1 ? message = '撤销发布后，博客上将不会显示该文章！' : message = '确定发布该文章到博客吗？'
-  status === 1 ? newStatus = 0 : newStatus = 1;
+function updateArticleStatus(article){
+  const message =  article.status === 1 ? '撤销发布后，博客上将不会显示该文章！' : '确定发布该文章到博客吗？';
+  const newStatus =  article.status === 1 ? 0 : 1;
   elMessageBox('提示', message).then(async () => {
-    if(await _updateArticleType(id, bl, newStatus)){
-      elSuccessNot('', status === 1 ? '撤销发布成功' : '发布文章成功')
-      await getArticleList();
+    if(await _updateArticleType(article.id, article.isComment, newStatus)){
+      elSuccessNot('', article.status === 1 ? '撤销发布成功' : '发布文章成功')
+      article.status = newStatus;
     }
   }).catch(() => {
     elMessageNot('', '操作取消')
@@ -275,7 +274,7 @@ onMounted(() => {
         <template #default="scope">
           <el-button type="primary" text @click="editArticle(scope.row.id)">修改</el-button>
           <el-button type="warning" text
-                     @click="updateArticleStatus(scope.row.id, scope.row.isComment, scope.row.status)">
+                     @click="updateArticleStatus(scope.row)">
             {{scope.row.status === 1 ? '撤销发布' : '发布文章'}}
           </el-button>
           <el-button type="danger" text @click="deleteArticle(scope.row.id)">删除</el-button>

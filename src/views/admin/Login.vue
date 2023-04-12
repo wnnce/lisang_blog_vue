@@ -11,7 +11,7 @@ const isCodeButton = ref(true);
 const fromData = reactive({
   username: '',
   password: '',
-  code: ''
+  // code: ''
 })
 
 const checkCode = (rule, value, callback) => {
@@ -78,14 +78,14 @@ function clearFrom(formEl){
           <el-input type="password" v-model="fromData.password" clearable placeholder="密码" show-password
                     size="large" :prefix-icon="KeyOutlined"/>
         </el-form-item>
-        <el-form-item prop="code">
-          <el-input type="text" v-model="fromData.code" clearable placeholder="验证码"
-                    size="large" :prefix-icon="MailOutlined">
-            <template #append>
-              <el-button :disabled="!isCodeButton" @click="sendCheckCode">{{isCodeButton ? '发 送' : '已发送'}}</el-button>
-            </template>
-          </el-input>
-        </el-form-item>
+<!--        <el-form-item prop="code">-->
+<!--          <el-input type="text" v-model="fromData.code" clearable placeholder="验证码"-->
+<!--                    size="large" :prefix-icon="MailOutlined">-->
+<!--            <template #append>-->
+<!--              <el-button :disabled="!isCodeButton" @click="sendCheckCode">{{isCodeButton ? '发 送' : '已发送'}}</el-button>-->
+<!--            </template>-->
+<!--          </el-input>-->
+<!--        </el-form-item>-->
         <el-button type="primary" :loading="loading" size="large" @click="onSubmit(ruleFormRef)"
                    :loading-icon="!isCodeButton">{{!loading ? '登 录' : '登录中'}}</el-button>
         <el-button type="warning" size="large" @click="clearFrom(ruleFormRef)">重 置</el-button>
