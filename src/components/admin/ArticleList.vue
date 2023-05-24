@@ -129,8 +129,8 @@ function handlerPageNumChange(){
   getArticleList()
 }
 function handlerPageSizeChange(){
-  pageNum.value = 1;
-  getArticleList()
+    pageNum.value = 1;
+    getArticleList()
 }
 
 function clearPageData(){
@@ -284,7 +284,7 @@ onMounted(() => {
     <div class="page-switch">
       <el-pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :page-sizes="[10, 20, 30]"
                      background layout="sizes, prev, pager, next" :total="articlePageInfo.total"
-                     @update:current-page="handlerPageNumChange" @update:page-size="handlerPageSizeChange"/>
+                     @current-change="handlerPageNumChange" @size-change="handlerPageSizeChange"/>
     </div>
   </div>
 </template>

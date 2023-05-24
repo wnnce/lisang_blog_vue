@@ -24,6 +24,7 @@ import {elMessageErr} from "@/assets/js/util";
 
 //axios全局配置和拦截器
 axios.defaults.baseURL = 'https://dev.server.zeroxn.com:1134';
+// axios.defaults.baseURL = 'http://localhost:7746';
 //最长等待时间 10s
 axios.defaults.timeout = 100000;
 axios.defaults.withCredentials = true;
