@@ -174,12 +174,11 @@ onMounted(() => {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  backdrop-filter: brightness(70%);
+  backdrop-filter: brightness(50%);
+  transition: all 500ms ease-out;
 }
 .image-filter:hover{
-  animation-name: image-filter;
-  animation-duration: 300ms;
-  animation-fill-mode: forwards;
+  backdrop-filter: brightness(70%);
 }
 .article-top{
   width: 100%;
@@ -255,8 +254,5 @@ onMounted(() => {
   .article-main{
     width: 90%;
   }
-}
-@keyframes image-filter {
-  to {backdrop-filter: brightness(90%)}
 }
 </style>

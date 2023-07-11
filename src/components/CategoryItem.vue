@@ -8,8 +8,7 @@ const isDivActive = ref(false)
 
 <template>
   <router-link :to="'/label/' + category.id">
-    <div class="category-item"  @mouseover="isDivActive = true"
-         @mouseleave="isDivActive = false" :class="isDivActive ? 'active' : 'not-active'">
+    <div class="category-item">
       <span>{{category.name}}</span>
       <span>{{category.articleNum}}</span>
     </div>
@@ -21,27 +20,13 @@ const isDivActive = ref(false)
   display: flex;
   justify-content: space-between;
   padding: 8px 8px;
-  animation-duration: 400ms;
-  animation-fill-mode: forwards;
   color: #333;
+  transition: padding-right 500ms ease, padding-left 500ms ease;
 }
 .category-item:hover{
   background-color: #41b6e6;
   color: white;
   cursor: pointer;
-}
-.active{
-  animation-name: active;
-}
-.not-active{
-  animation-name: not-active;
-}
-@keyframes active {
-  0% {padding: 8px 8px}
-  100% {padding: 8px 24px}
-}
-@keyframes not-active {
-  0% {padding: 8px 20px}
-  100% {padding: 8px 8px}
+  padding: 8px 20px;
 }
 </style>

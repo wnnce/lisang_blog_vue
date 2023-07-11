@@ -9,7 +9,6 @@ import {useRouter} from "vue-router";
 
 const value = defineProps(['index', 'article'])
 const router = useRouter()
-const isImageActive = ref(false)
 const isIndex = computed(() => {
   return value.index % 2 === 0
 })
@@ -29,8 +28,7 @@ const categoryList = computed(() => {
 </script>
 
 <template>
-  <a-card hoverable class="card-base" :body-style="{padding: '0'}"  @mouseleave="isImageActive = false"
-          @mouseover="isImageActive = true" :loading="!article">
+  <a-card hoverable class="card-base" :body-style="{padding: '0'}" :loading="!article">
     <a-row>
       <a-col :span="14" :push="isIndex ? 10 : 0">
         <div class="post" >
@@ -62,7 +60,7 @@ const categoryList = computed(() => {
       </a-col>
       <a-col :span="10" :pull="isIndex ? 14 : 0">
         <div class="div-img" :class="isIndex ? 'img-left' : 'img-right'" :style="{backgroundImage: 'url(' + article.cover + ')'}">
-          <div class="background-image-filter" :class="[isImageActive ? 'active' : 'not-active', isIndex ? 'img-left' : 'img-right']"></div>
+          <div class="background-image-filter" :class="isIndex ? 'img-left' : 'img-right'"></div>
         </div>
       </a-col>
     </a-row>
@@ -95,17 +93,14 @@ const categoryList = computed(() => {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  transition: all 500ms;
   .background-image-filter{
     width: 100%;
     height: 100%;
-    animation-duration: 1.2s;
-    animation-fill-mode: forwards;
+    transition: all 300ms;
   }
-  .active{
-    animation-name: img-active;
-  }
-  .not-active{
-    animation-name: img-notActive;
+  &:hover{
+    background-size: 150%;
   }
 }
 .img-left{
@@ -113,18 +108,5 @@ const categoryList = computed(() => {
 }
 .img-right{
   border-radius: 0 12px 12px 0;
-}
-@keyframes img-active {
-  to {
-    backdrop-filter: saturate(150%) contrast(110%) brightness(110%);
-  }
-}
-@keyframes img-notActive {
-  from{
-    backdrop-filter: saturate(130%) contrast(110%) brightness(110%);
-  }
-  to {
-    backdrop-filter: saturate(100%) contrast(100%) brightness(100%);
-  }
 }
 </style>

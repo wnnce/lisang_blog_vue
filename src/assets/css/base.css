@@ -11,11 +11,12 @@
     font-size: 12px;
     margin-right: 4px;
 }
+.text-hover{
+    transition: color 300ms;
+}
 .text-hover:hover{
     cursor: pointer;
-    animation-name: text-color-switch;
-    animation-duration: 300ms;
-    animation-fill-mode: forwards;
+    color: #55bae7;
 }
 .list-tool{
     text-align: end;
@@ -35,7 +36,4 @@
     .vuepress-markdown-body{
         padding: 0 !important;
     }
-}
-@keyframes text-color-switch {
-    to {color: #55bae7}
 }
