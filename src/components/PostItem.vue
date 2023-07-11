@@ -93,14 +93,13 @@ const categoryList = computed(() => {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  transition: all 500ms;
   .background-image-filter{
     width: 100%;
     height: 100%;
-    transition: all 300ms;
+    transition: all 400ms ease-in-out;
   }
-  &:hover{
-    background-size: 150%;
+  .background-image-filter:hover{
+    backdrop-filter: saturate(150%) contrast(110%) brightness(110%);
   }
 }
 .img-left{
